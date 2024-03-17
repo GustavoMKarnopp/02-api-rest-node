@@ -1,16 +1,17 @@
 /* eslint-disable prettier/prettier */
 import fastify from 'fastify'
-import { knex } from './database'
 import { env } from './env'
+import { transactionRoutes } from './routes/transactions'
+import Cookie from '@fastify/cookie'
 // import crypto from 'node:crypto'
 
 const app = fastify()
 
-app.get('/transaction', async () => {
-  const transactions = await knex('transactions')
-  .where('amount', 1000)
-  .select('*')
-  return transactions
+// IMPORTANTE LEVAR EM CONSIDERAÇÃO SEMPRE A ORDEM DOS PLUGINS
+
+app.register(Cookie)
+app.register(transactionRoutes, {
+  prefix: 'transactions'
 })
 
 app
