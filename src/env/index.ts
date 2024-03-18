@@ -1,7 +1,13 @@
 /* eslint-disable prettier/prettier */
-import 'dotenv/config'
+import {config} from 'dotenv'
 
 import { z } from 'zod'
+
+if(process.env.NODE_ENV === 'test'){
+    config({path: '.env.test'})
+}else{
+    config()
+}
 
 /* O schema diz o formato que vou receber dos dados em nossa aplicação */
 const envSchema = z.object({
