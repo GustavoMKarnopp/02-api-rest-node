@@ -7,7 +7,7 @@ import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import crypto from 'node:crypto'
 import { z } from 'zod'
-// import { checkSessionIdExist } from '../middlewares/check-session-id-exist'
+import { checkSessionIdExists } from '../middlewares/check-session-id-exist'
 
 export async function dietMelsRoutes(app: FastifyInstance) {
 
@@ -24,12 +24,12 @@ export async function dietMelsRoutes(app: FastifyInstance) {
     
     // TODO: LISTA UMA ÚNICA TRANSAÇÃO
     // app.get('/:id', { preHandler: [checkSessionIdExist] }, async (request) => {
-    //     const getTransactionsParamsSchema = z.object({
+    //     const getMelsParamsSchema = z.object({
     //         id: z.string().uuid(),
     //     })
-    //     const {id} = getTransactionsParamsSchema.parse(request.params)
+    //     const {id} = getMelsParamsSchema.parse(request.params)
     //     const {sessionId} = request.cookies
-    //     const transaction = await knex('transactions')
+    //     const transaction = await knex('record_meal')
     //     .where({
     //         id,
     //         session_id: sessionId
@@ -51,61 +51,54 @@ export async function dietMelsRoutes(app: FastifyInstance) {
     // })
     
     // TODO: CRIA UMA NOVA TRANSAÇÃO
-    app.post('/', async (request, reply) => {
-        const createDietBodySchema = z.object({
-            first_name: z.string(),
-            last_name: z.string(),
-            email: z.string(),
-        })
-        const { first_name, last_name, email } = createDietBodySchema.parse(request.body)
+    // app.post('/', async (request, reply) => {
+    //     const createDietBodySchema = z.object({
+    //         first_name: z.string(),
+    //         last_name: z.string(),
+    //         email: z.string(),
+    //     })
+    //     const { first_name, last_name, email } = createDietBodySchema.parse(request.body)
         
-        // Valida o usuário pelo id no cookies
-        let sessionId = request.cookies.sessionId
+    //     // Valida o usuário pelo id no cookies
+    //     let sessionId = request.cookies.sessionId
 
-        // Se nao tiver o id do cookie, vai criar e será valido por 7 dias.
-        if(!sessionId){
-            sessionId = crypto.randomUUID()
-            reply.cookie('sessionId', sessionId, {
-                path: '/', // ESSE PATH ESPECIFICA QUAIS ROTAS IRÃO PODER ACESSAR ESTE COOKIE
-                maxAge: 60 * 60 * 24 * 7 // 7 DIAS
-            })
-        }
-        await knex('user_diet').insert({
+    //     // Se nao tiver o id do cookie, vai criar e será valido por 7 dias.
+    //     if(!sessionId){
+    //         sessionId = crypto.randomUUID()
+    //         reply.cookie('sessionId', sessionId, {
+    //             path: '/', // ESSE PATH ESPECIFICA QUAIS ROTAS IRÃO PODER ACESSAR ESTE COOKIE
+    //             maxAge: 60 * 60 * 24 * 7 // 7 DIAS
+    //         })
+    //     }
+    //     await knex('user_diet').insert({
+    //         id: crypto.randomUUID(),
+    //         first_name,
+    //         last_name,
+    //         email,
+    //         session_id: sessionId
+    //     })
+    //     return reply.status(201).send()
+    // })
+    app.post('/', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
+
+        const createDietBodySchema = z.object({
+            title: z.string(),
+            description: z.string(),
+            isOnDiet: z.boolean(),
+            date: z.coerce.date(),
+        })
+
+        const {title, description, isOnDiet, date} = createDietBodySchema.parse(request.body)
+
+        await knex('meals')
+        .insert({
             id: crypto.randomUUID(),
-            first_name,
-            last_name,
-            email,
-            session_id: sessionId
+            title,
+            description,
+            is_on_diet: isOnDiet,
+            date: date.getTime(),
+            users_id: request.users?.id,
         })
         return reply.status(201).send()
     })
-    // app.post('/:id', async (request, reply) => {
-    //         const createDietBodySchema = z.object({
-    //             title: z.string(),
-    //             description: z.string(),
-    //             is_on_diet: z.boolean(),
-    //         })
-    //         const {title, description, is_on_diet} = createDietBodySchema.parse(request.body)
-
-    //         // Valida o usuário pelo id no cookies
-    //         let sessionId = request.cookies.sessionId
-
-    //         // Se nao tiver o id do cookie, vai criar e será valido por 7 dias.
-    //         if(!sessionId){
-    //             sessionId = crypto.randomUUID()
-    //             reply.cookie('sessionId', sessionId, {
-    //                 path: '/', // ESSE PATH ESPECIFICA QUAIS ROTAS IRÃO PODER ACESSAR ESTE COOKIE
-    //                 maxAge: 60 * 60 * 24 * 7 // 7 DIAS
-    //             })
-    //         }
-    //         await knex('transactions')
-    //         .insert({
-    //             id: crypto.randomUUID(),
-    //             title,
-    //             description,
-    //             is_on_diet,
-    //             session_id: sessionId
-    //         })
-    //         return reply.status(201).send()
-    // })
 }

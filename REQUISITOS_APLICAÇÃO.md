@@ -1,6 +1,6 @@
 ### Regras da aplicação
 
-[ ] - Deve ser possível criar um usuário (POST)
+[x] - Deve ser possível criar um usuário (POST)
 [ ] - Deve ser possível identificar o usuário entre as requisições (GET)
 [ ] - Deve ser possível registrar uma refeição feita, com as seguintes informações: (POST)
     
