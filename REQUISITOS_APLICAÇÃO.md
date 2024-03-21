@@ -25,3 +25,7 @@
 ### FIGMA DO FRONT
 
 https://www.figma.com/file/ONALUda1bUhZVAULInltb0/Daily-Diet-%E2%80%A2-Desafio-React-Native-(Community)?type=design&node-id=2773-9356&mode=design&t=eft4R0u74wVTZ0NL-0
+
+
+### PUSH NO GIT especificado
+git push --mirror https://github.com/GustavoMKarnopp/Desafio02-Node-Rocketseat
