@@ -10,17 +10,6 @@ import { z } from 'zod'
 import { checkSessionIdExists } from '../middlewares/check-session-id-exist'
 
 export async function dietMelsRoutes(app: FastifyInstance) {
-
-    // TODO: LISTA AS TRANSAÇÕES
-    // app.get('/', { preHandler: [checkSessionIdExist] }, async (request) => {
-    //     const {sessionId} = request.cookies
-    //     const transaction = await knex('transactions')
-    //     .where('session_id', sessionId)
-    //     .select('*')    
-    //     return {
-    //         transaction
-    //     }
-    // })
     
     // TODO: LISTA UMA ÚNICA TRANSAÇÃO
     // app.get('/:id', { preHandler: [checkSessionIdExist] }, async (request) => {
@@ -100,5 +89,13 @@ export async function dietMelsRoutes(app: FastifyInstance) {
             users_id: request.users?.id,
         })
         return reply.status(201).send()
+    })
+
+     // TODO: LISTA AS TRANSAÇÕES
+     app.get('/', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
+        const meals= await knex('meals')
+        .where({ users_id: request.users?.id })
+        .orderBy('date', 'desc')   
+        return reply.send({ meals })
     })
 }
