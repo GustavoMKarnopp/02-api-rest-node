@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
 /* eslint-disable camelcase */
-/* eslint-disable prettier/prettier */
 import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import crypto from 'node:crypto'
@@ -91,11 +90,48 @@ export async function dietMelsRoutes(app: FastifyInstance) {
         return reply.status(201).send()
     })
 
-     // TODO: LISTA AS TRANSAÇÕES
-     app.get('/', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
+     // TODO: LISTA AS REFEICOES
+    app.get('/', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
         const meals= await knex('meals')
         .where({ users_id: request.users?.id })
         .orderBy('date', 'desc')   
         return reply.send({ meals })
+    })
+
+    // TODO: ALTERA AS REFEIÇÕES
+    app.put('/:id', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
+        const getMelsParamsSchema = z.object({
+            id: z.string().uuid(),
+        })
+        const createDietBodySchema = z.object({
+            title: z.string(),
+            description: z.string(),
+            isOnDiet: z.boolean(),
+        })
+        const {id} = getMelsParamsSchema.parse(request.params)
+        const { title, description, isOnDiet} = createDietBodySchema.parse(request.body)
+
+        await knex('meals')
+        .where({
+            id,
+            users_id: request.users?.id
+        })
+        .update({
+            title,
+            description,
+            is_on_diet: isOnDiet,
+        })
+        return reply.status(201).send()
+    })
+
+    // TODO: DELETAR AS REFEIÇÕES
+    app.delete('/:id', { preHandler: [checkSessionIdExists] }, async (request, reply) => {
+        const getMelsParamsSchema = z.object({id: z.string().uuid()})
+        const {id} = getMelsParamsSchema.parse(request.params)    
+
+        await knex('meals')
+        .where({id:id})
+        .delete()
+        return reply.status(201).send()
     })
 }

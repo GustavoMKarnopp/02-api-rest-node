@@ -2,14 +2,14 @@
 
 [x] - Deve ser possível criar um usuário (POST)
 [ ] - Deve ser possível identificar o usuário entre as requisições (GET)
-[ ] - Deve ser possível registrar uma refeição feita, com as seguintes informações: (POST)
+[x] - Deve ser possível registrar uma refeição feita, com as seguintes informações: (POST)
     
 ### As refeições devem ser relacionadas a um usuário.*
     
-    [ ] - Nome
-    [ ] - Descrição
-    [ ] - Data e Hora
-    [ ] - Está dentro ou não da dieta
+    [x] - Title
+    [x] - Descrição
+    [x] - Data e Hora
+    [x] - Está dentro ou não da dieta
 
 [ ] - Deve ser possível editar uma refeição, podendo alterar todos os dados acima . (PUT/PATCH)
 [ ] - Deve ser possível apagar uma refeição (DELETE)
