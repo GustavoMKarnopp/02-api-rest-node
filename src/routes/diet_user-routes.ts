@@ -4,6 +4,7 @@ import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import crypto from 'node:crypto'
 import { z } from 'zod'
+import { checkSessionIdExists } from '../middlewares/check-session-id-exist'
 
 export async function dietUserRoutes(app: FastifyInstance) {
     
@@ -28,9 +29,7 @@ export async function dietUserRoutes(app: FastifyInstance) {
         }
         
         const { first_name, last_name, email } = createDietBodySchema.parse(request.body)
-        
         const dietByEmail = await knex('users').where({email}).first()
-
         if(dietByEmail){
             return reply.status(400).send({message: 'User already exist'})
         }
@@ -43,5 +42,16 @@ export async function dietUserRoutes(app: FastifyInstance) {
             session_id: sessionId
         })
         return reply.status(201).send()
+    })
+
+    // TODO: LISTA USER
+    app.get('/', { preHandler: [checkSessionIdExists] }, async (request) => {
+        const {sessionId} = request.cookies
+        const user = await knex('users')
+        .where('session_id', sessionId)
+        .select('*')    
+        return {
+            user
+        }
     })
 }

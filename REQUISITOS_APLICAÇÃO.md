@@ -1,25 +1,25 @@
 ### Regras da aplicação
 
-[x] - Deve ser possível criar um usuário (POST)
-[ ] - Deve ser possível identificar o usuário entre as requisições (GET)
-[x] - Deve ser possível registrar uma refeição feita, com as seguintes informações: (POST)
+[X] - Deve ser possível criar um usuário (POST)
+[X] - Deve ser possível identificar o usuário entre as requisições (GET)
+[X] - Deve ser possível registrar uma refeição feita, com as seguintes informações: (POST)
     
 ### As refeições devem ser relacionadas a um usuário.*
     
-    [x] - Title
-    [x] - Descrição
-    [x] - Data e Hora
-    [x] - Está dentro ou não da dieta
+    [X] - Title
+    [X] - Descrição
+    [X] - Data e Hora
+    [X] - Está dentro ou não da dieta
 
-[ ] - Deve ser possível editar uma refeição, podendo alterar todos os dados acima . (PUT/PATCH)
-[ ] - Deve ser possível apagar uma refeição (DELETE)
-[ ] - Deve ser possível listar todas as refeições de um usuário (GET)
-[ ] - Deve ser possível visualizar uma única refeição (GET de um usuário)
-[ ] - Deve ser possível recuperar as métricas de um usuário (GET, total metricas)
-    [ ] - Quantidade total de refeições registradas 
-    [ ] - Quantidade total de refeições dentro da dieta
-    [ ] - Quantidade total de refeições fora da dieta
-    [ ] - Melhor sequência de refeições dentro da dieta
+[X] - Deve ser possível editar uma refeição, podendo alterar todos os dados acima . (PUT/PATCH)
+[X] - Deve ser possível apagar uma refeição (DELETE)
+[X] - Deve ser possível listar todas as refeições de um usuário (GET)
+[X] - Deve ser possível visualizar uma única refeição (GET de um usuário)
+[X] - Deve ser possível recuperar as métricas de um usuário (GET, total metricas)
+    [X] - Quantidade total de refeições registradas 
+    [X] - Quantidade total de refeições dentro da dieta
+    [X] - Quantidade total de refeições fora da dieta
+    [X] - Melhor sequência de refeições dentro da dieta
 [ ] - O usuário só pode visualizar, editar e apagar as refeições o qual ele criou 
 
 ### FIGMA DO FRONT
