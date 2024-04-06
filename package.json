@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "knex": "node --no-warnings --import tsx ./node_modules/knex/bin/cli.js",
+    "knex": "node --no-warnings --loader tsx ./node_modules/knex/bin/cli.js",
     "build": "tsup src",
     "lint": "eslint src --ext .ts",
     "test": "vitest"
@@ -15,6 +18,7 @@
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
+    "@types/node": "^20.11.28",
     "@types/supertest": "^6.0.2",
     "eslint": "^8.57.0",
     "supertest": "^6.3.4",
